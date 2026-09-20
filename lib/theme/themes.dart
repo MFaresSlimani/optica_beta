@@ -1,63 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Themes{
-  final lightTheme = ThemeData.light().copyWith(
+class Themes {
+  static TextStyle _fontStyle({
+    double? fontSize,
+    FontWeight? fontWeight,
+    Color? color,
+  }) {
+    return GoogleFonts.abel(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+      textStyle: TextStyle(
+        fontFamilyFallback: [
+          GoogleFonts.notoSansTifinagh().fontFamily ?? 'Noto Sans Tifinagh',
+        ],
+      ),
+    );
+  }
+
+  final darkTheme = ThemeData.dark().copyWith(
     primaryColor: const Color(0xFF0B2C33),
     hintColor: const Color(0xFFB78D75),
-    textTheme: TextTheme(
-      displayLarge: GoogleFonts.ubuntu(
-        fontSize: 36.0,
-        fontStyle: FontStyle.italic,
-      ),
-      titleLarge: GoogleFonts.ubuntu(
-        fontSize: 24.0,
-        fontStyle: FontStyle.italic,
-      ),
-      bodyMedium: GoogleFonts.ubuntu(
+    scaffoldBackgroundColor: const Color(0xFF0B2C33),
+    listTileTheme: ListTileThemeData(
+      titleTextStyle: _fontStyle(
+        color: Colors.white,
         fontSize: 18.0,
-        fontStyle: FontStyle.italic,
       ),
     ),
+    textTheme: TextTheme(
+      displayLarge: _fontStyle(
+        fontSize: 36.0,
+      ),
+      titleSmall: _fontStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 18.0,
+      ),
+      bodyMedium: _fontStyle(
+        fontSize: 18.0,
+      ),
+    ),
+
+    cardColor: const Color(0xFF0B2C33),
     appBarTheme: AppBarTheme(
-      color: const Color(0xFF0B2C33),
+      backgroundColor: const Color(0xFF0B2C33),
       centerTitle: true,
       foregroundColor: const Color(0xFFB78D75),
-      titleTextStyle: GoogleFonts.ubuntu(
+      titleTextStyle: _fontStyle(
+        color: const Color(0xFFB78D75),
         fontSize: 24.0,
-        fontStyle: FontStyle.italic,
       ),
     ),
     drawerTheme: const DrawerThemeData(
       elevation: 0,
       backgroundColor: Color(0xFF0B2C33),
+      surfaceTintColor: Color(0xFF0B2C33),
     ),
   );
-  final darkTheme = ThemeData.dark().copyWith(
+
+  final lightTheme = ThemeData.light().copyWith(
     hintColor: const Color(0xFF0B2C33),
-    primaryColor: Colors.white,
+    primaryColor: const Color(0xFFB78D75),
     textTheme: TextTheme(
-      displayLarge: GoogleFonts.ubuntu(
+      displayLarge: _fontStyle(
         fontSize: 36.0,
-        fontStyle: FontStyle.italic,
+        color: const Color(0xFF0B2C33),
       ),
-      titleLarge: GoogleFonts.ubuntu(
-        fontSize: 24.0,
-        fontStyle: FontStyle.italic,
+      titleSmall: _fontStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 20.0,
+        color: const Color(0xFF0B2C33),
       ),
-      bodyMedium: GoogleFonts.ubuntu(
+      bodyMedium: _fontStyle(
         fontSize: 18.0,
-        fontStyle: FontStyle.italic,
+        color: const Color(0xFF0B2C33),
+      ),
+    ),
+    cardColor: Colors.white,
+    listTileTheme: ListTileThemeData(
+      titleTextStyle: _fontStyle(
+        color: const Color(0xFF0B2C33),
+        fontSize: 18.0,
       ),
     ),
     appBarTheme: AppBarTheme(
-      color: Colors.white,
+      backgroundColor: const Color(0xFF0B2C33),
       centerTitle: true,
-      foregroundColor: const Color(0xFF0B2C33),
-      titleTextStyle: GoogleFonts.ubuntu(
+      foregroundColor: const Color(0xFFB78D75),
+      titleTextStyle: _fontStyle(
+        color: const Color(0xFFB78D75),
         fontSize: 24.0,
-        fontStyle: FontStyle.italic,
       ),
+    ),
+    drawerTheme: const DrawerThemeData(
+      elevation: 0,
+      backgroundColor: Color(0xFF0B2C33),
     ),
   );
 }
