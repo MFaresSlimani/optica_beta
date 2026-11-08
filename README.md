@@ -1,21 +1,52 @@
-# Optica 👓✨
+# Optica
 
-Welcome to **Optica** – your one-stop shop for optical glasses! 😎  
-Find the perfect pair of glasses to fit your style and vision needs. 👀
+A Flutter app that connects optical stores so they can send each other lens and frame requests, track what was fulfilled, and print tickets on thermal printers.
 
-🚧 **Construction Zone!** 🚧  
-The app is still in progress! We’re fine-tuning things, but it’ll be ready soon! 🔧🔨 Stay tuned for updates! 🎉
+> Status: active development. Android and iOS builds run against a Supabase backend.
 
-## Features (Coming Soon!) 🚀
-- Browse a wide selection of optical glasses 🛍️
-- Try on glasses virtually (well, almost! 😉)
-- Easy checkout and delivery 🚚
+## Features
 
-## How to Use (When It’s Ready) 📲
-1. Download the app (coming soon!)
-2. Browse glasses and pick your favorite 😍
-3. Checkout and wait for your new stylish look! 👓💅
+- Email auth with store-owner profiles and store creation (images, location, description)
+- Send and receive glasses requests between stores, with per-item tracking (done / left over) and completion messages
+- Request inbox and outbox with request details
+- Thermal ticket printing over USB with a preview screen
+- Multilingual UI (GetX translations) with a language switcher
+- Local draft storage for glasses items with Hive
 
-**Note:** The app is still under development – we’re working hard to make it the best! Stay tuned for updates! 🎉
+## Tech stack
 
-Feel free to come back and check for updates! 🎯
+| Layer | Choice |
+|---|---|
+| UI / state | Flutter, GetX |
+| Backend | Supabase (Postgres, Auth, Storage) with Row Level Security |
+| Local storage | Hive |
+| Printing | flutter_thermal_printer |
+
+## Architecture
+
+A 3-layer GetX structure: `core` (constants, network, routes, utils), `data` (models, providers), `presentation` (modules). Rules followed in this codebase: no business logic in views, every UI string goes through translations, named routes only. See [AGENTS.md](AGENTS.md) for the full conventions used with AI coding agents.
+
+```
+lib/
+  core/          constants, network (Supabase client), routes, utils
+  data/          models, providers (auth, stores, requests)
+  presentation/  feature modules (views + controllers + bindings)
+  translation/   GetX translation maps
+```
+
+The database schema and RLS policies live in [supabase_schema.sql](supabase_schema.sql).
+
+## Getting started
+
+```bash
+flutter pub get
+flutter run \
+  --dart-define=SUPABASE_URL=https://<your-project>.supabase.co \
+  --dart-define=SUPABASE_ANON_KEY=<your-anon-key>
+```
+
+To use your own backend, create a Supabase project and run `supabase_schema.sql` in the SQL editor.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
