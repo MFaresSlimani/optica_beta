@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../models/store_model.dart';
+import '../data/models/store_model.dart';
 import '../screens/store_screens/store_screen.dart';
 
 class StoreWidget extends StatelessWidget {

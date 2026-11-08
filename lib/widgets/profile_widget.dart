@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../authentication.dart';
-import '../../models/user_model.dart';
+import '../authentication.dart';
+import '../data/models/user_model.dart';
 import '../screens/profile_screens/profile_screen.dart';
 
 // get the user id and get the details to build a widget

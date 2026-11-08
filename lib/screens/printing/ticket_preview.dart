@@ -1,5 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:bng_optica/core/utils/receipt_printer.dart';
-import 'package:bng_optica/models/request_model.dart';
+import 'package:bng_optica/data/models/request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_thermal_printer/flutter_thermal_printer.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
@@ -76,7 +77,7 @@ class TicketPreview extends StatelessWidget {
           .printData(printer, receiptData, longData: true);
       return true;
     } catch (e) {
-      print('Print failed: $e');
+      debugPrint('Print failed: $e');
       return false;
     }
   }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../authentication.dart';
-import '../../models/request_model.dart';
-import '../../models/user_model.dart';
+import '../../data/models/request_model.dart';
+import '../../data/models/user_model.dart';
 import '../../notifications/notifications.dart';
 
 class HandleRequestScreen extends StatefulWidget {

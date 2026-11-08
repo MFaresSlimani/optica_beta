@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../authentication.dart';
-import '../../models/request_model.dart';
-import '../../models/user_model.dart';
+import '../../data/models/request_model.dart';
+import '../../data/models/user_model.dart';
 import '../../widgets/profile_widget.dart';
 
 class RequestDetails extends StatelessWidget {

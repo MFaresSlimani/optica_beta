@@ -1,7 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/supabase_constants.dart';
 import '../../core/network/supabase_client.dart';
-import '../../models/store_model.dart';
+import '../models/store_model.dart';
 
 class StoresProvider {
   final SupabaseClient _client;

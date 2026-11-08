@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../authentication.dart';
-import '../../models/request_model.dart';
+import '../../data/models/request_model.dart';
 
 Future<List<int>> generateReceiptBytes(Request request) async {
   final profile = await CapabilityProfile.load();

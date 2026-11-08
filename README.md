@@ -1,5 +1,7 @@
 # Optica
 
+[![CI](https://github.com/MFaresSlimani/optica_beta/actions/workflows/ci.yml/badge.svg)](https://github.com/MFaresSlimani/optica_beta/actions/workflows/ci.yml)
+
 A Flutter app that connects optical stores so they can send each other lens and frame requests, track what was fulfilled, and print tickets on thermal printers.
 
 > Status: active development. Android and iOS builds run against a Supabase backend.
@@ -10,6 +12,7 @@ A Flutter app that connects optical stores so they can send each other lens and 
 - Send and receive glasses requests between stores, with per-item tracking (done / left over) and completion messages
 - Request inbox and outbox with request details
 - Thermal ticket printing over USB with a preview screen
+- Live in-app alerts for new and completed requests via Supabase Realtime
 - Multilingual UI (GetX translations) with a language switcher
 - Local draft storage for glasses items with Hive
 
@@ -29,8 +32,9 @@ A 3-layer GetX structure: `core` (constants, network, routes, utils), `data` (mo
 ```
 lib/
   core/          constants, network (Supabase client), routes, utils
-  data/          models, providers (auth, stores, requests)
-  presentation/  feature modules (views + controllers + bindings)
+  data/          models and providers (auth, users, stores, requests, storage)
+  presentation/  feature modules (views + controllers + bindings), auth migrated
+  screens/       remaining feature screens, being migrated into presentation/
   translation/   GetX translation maps
 ```
 
@@ -46,6 +50,12 @@ flutter run \
 ```
 
 To use your own backend, create a Supabase project and run `supabase_schema.sql` in the SQL editor.
+
+## Tests
+
+```bash
+flutter test
+```
 
 ## License
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../authentication.dart';
-import '../../models/request_model.dart';
+import '../authentication.dart';
+import '../data/models/request_model.dart';
 import '../screens/request_screen/request_details.dart';
 
 class RequestWidget extends StatelessWidget {

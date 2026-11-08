@@ -38,11 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView(
                   children: const [Center(child: Text('No stores found'))]);
             } else {
-              print(snapshot.data!.length);
               return ListView.builder(
                 itemCount: snapshot.data?.length,
                 itemBuilder: (context, index) {
-                  print('Data at index $index: ${snapshot.data![index]}');
                   return StoreWidget(store: snapshot.data![index]);
                 },
               );

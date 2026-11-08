@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../authentication.dart';
 import '../core/constants/app_colors.dart';
 import '../core/constants/app_strings.dart';
-import '../models/user_model.dart';
+import '../data/models/user_model.dart';
 import '../screens/auth_screens/login_screen.dart';
 import '../screens/profile_screens/profile_screen.dart';
 import '../screens/request_screen/requests_list.dart';

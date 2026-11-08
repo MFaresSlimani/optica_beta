@@ -8,9 +8,9 @@ import 'data/providers/requests_provider.dart';
 import 'data/providers/storage_provider.dart';
 import 'data/providers/stores_provider.dart';
 import 'data/providers/users_provider.dart';
-import 'models/request_model.dart';
-import 'models/store_model.dart';
-import 'models/user_model.dart';
+import 'data/models/request_model.dart';
+import 'data/models/store_model.dart';
+import 'data/models/user_model.dart';
 
 extension SupabaseUserExt on User {
   String get uid => id;
@@ -74,12 +74,12 @@ class AuthenticationService extends GetxController {
       return response.user;
     } on AuthException catch (e) {
       if (kDebugMode) {
-        print('AuthException signing in: ${e.message}');
+        debugPrint('AuthException signing in: ${e.message}');
       }
       rethrow;
     } catch (e) {
       if (kDebugMode) {
-        print('Error signing in: $e');
+        debugPrint('Error signing in: $e');
       }
       return null;
     }
@@ -145,12 +145,12 @@ class AuthenticationService extends GetxController {
       return user;
     } on AuthException catch (e) {
       if (kDebugMode) {
-        print('AuthException signing up: ${e.message}');
+        debugPrint('AuthException signing up: ${e.message}');
       }
       rethrow;
     } catch (e) {
       if (kDebugMode) {
-        print('Error signing up: $e');
+        debugPrint('Error signing up: $e');
       }
       return null;
     }
@@ -162,7 +162,7 @@ class AuthenticationService extends GetxController {
       return true;
     } catch (e) {
       if (kDebugMode) {
-        print('Error sending password reset email: $e');
+        debugPrint('Error sending password reset email: $e');
       }
       return false;
     }

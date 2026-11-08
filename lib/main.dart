@@ -24,7 +24,7 @@ Future<void> main() async {
     await NotificationController().initNotifications();
   } catch (e) {
     if (kDebugMode) {
-      print('Error initializing Supabase: $e');
+      debugPrint('Error initializing Supabase: $e');
     }
   }
 

@@ -9,7 +9,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/constants/app_strings.dart';
-import '../../models/store_model.dart';
+import '../../data/models/store_model.dart';
 import 'images_viewer.dart';
 
 class StoreScreen extends StatefulWidget {

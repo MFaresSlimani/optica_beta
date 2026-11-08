@@ -56,7 +56,7 @@ class NotificationController {
         ..subscribe();
     } catch (e) {
       if (kDebugMode) {
-        print('Error initializing notifications: $e');
+        debugPrint('Error initializing notifications: $e');
       }
     }
   }
@@ -92,7 +92,7 @@ class NotificationController {
   ) async {
     // Displays in-app notification and logs event
     if (kDebugMode) {
-      print('Sending notification to $userIdentifier: $title - $body');
+      debugPrint('Sending notification to $userIdentifier: $title - $body');
     }
     showNotification(title: title, body: body);
   }

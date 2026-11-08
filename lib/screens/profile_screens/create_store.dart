@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../authentication.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
-import '../../models/store_model.dart';
+import '../../data/models/store_model.dart';
 
 class CreateNewStoreScreen extends StatefulWidget {
   const CreateNewStoreScreen({super.key});

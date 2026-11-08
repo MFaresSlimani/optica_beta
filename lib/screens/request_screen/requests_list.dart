@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../authentication.dart';
-import '../../models/user_model.dart';
+import '../../data/models/user_model.dart';
 
 class RequestsScreen extends StatelessWidget {
   final AuthenticationService _authController = Get.find<AuthenticationService>();
