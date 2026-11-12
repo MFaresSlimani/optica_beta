@@ -1,0 +1,6 @@
+tags:
+  # Renders README screenshots into docs/screenshots. Font rasterisation
+  # differs between operating systems, so these are regenerated on purpose
+  # (`flutter test --tags screenshots --update-goldens`) rather than compared
+  # in CI.
+  screenshots:

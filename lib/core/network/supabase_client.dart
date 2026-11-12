@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../constants/supabase_constants.dart';
 
 Future<void> initSupabase() async {

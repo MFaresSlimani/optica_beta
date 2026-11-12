@@ -4,16 +4,32 @@ on:
   push:
     branches: [main, master]
   pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch or PR cancels the run in progress.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Pinned so CI formats, analyzes and builds exactly like local development.
+  FLUTTER_VERSION: '3.44.0'
 
 jobs:
-  analyze-and-test:
+  quality:
+    name: Format, analyze, test
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
       - name: Install dependencies
@@ -21,13 +37,96 @@ jobs:
 
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed lib test
-        continue-on-error: true
 
-      - name: Analyze
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - name: Analyze (strict, infos are fatal)
+        run: flutter analyze --fatal-infos --fatal-warnings
 
-      - name: Test
-        run: flutter test --coverage
+      # Screenshot goldens are excluded: font rasterisation differs per OS.
+      # They are rendered by the `screenshots` job below instead.
+      - name: Test with coverage
+        run: flutter test --exclude-tags screenshots --coverage --reporter github
 
-      - name: Build debug APK
-        run: flutter build apk --debug
+      - name: Coverage summary
+        if: always() && hashFiles('coverage/lcov.info') != ''
+        run: |
+          read -r hit found < <(awk -F: '/^LH:/{h+=$2} /^LF:/{f+=$2} END{print h, f}' coverage/lcov.info)
+          pct=$(awk -v h="$hit" -v f="$found" 'BEGIN{printf "%.1f", f ? 100*h/f : 0}')
+          echo "Line coverage: ${pct}% (${hit}/${found})"
+          {
+            echo "### Test coverage"
+            echo ""
+            echo "**${pct}%** of lines (${hit} / ${found})"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always() && hashFiles('coverage/lcov.info') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-lcov
+          path: coverage/lcov.info
+          retention-days: 14
+
+  screenshots:
+    name: Render UI screenshots
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - run: flutter pub get
+
+      # Proves every screen renders without layout errors and publishes the
+      # result, so README screenshots are reproducible from any commit.
+      - name: Render screenshots
+        run: flutter test --tags screenshots --update-goldens
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: docs/screenshots/*.png
+          retention-days: 14
+
+  build-android:
+    name: Build release APK
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - run: flutter pub get
+
+      # Without a keystore in secrets the release build is signed with the
+      # debug key (see android/app/build.gradle.kts); fine for CI artifacts.
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: APK size
+        run: |
+          size=$(du -h build/app/outputs/flutter-apk/app-release.apk | cut -f1)
+          echo "Release APK: $size"
+          echo "### Release APK: $size" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: optica-apk-${{ github.sha }}
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 14
