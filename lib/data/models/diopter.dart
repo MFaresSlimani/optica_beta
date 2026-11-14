@@ -19,7 +19,17 @@ class Diopter implements Comparable<Diopter> {
     return value == null ? null : Diopter.fromValue(value);
   }
 
+  /// Builds a power from the picker's parts: sign, whole diopters and quarter
+  /// steps (0–3, i.e. .00 .25 .50 .75).
+  factory Diopter.fromParts({required bool negative, required int whole, required int quarter}) {
+    final magnitude = whole * 4 + quarter;
+    return Diopter.quarters(negative ? -magnitude : magnitude);
+  }
+
   static const Diopter zero = Diopter.quarters(0);
+
+  /// Decimal labels for the quarter steps, indexed by [quarterPart].
+  static const List<String> quarterLabels = ['00', '25', '50', '75'];
 
   final int quarters;
 
@@ -27,16 +37,19 @@ class Diopter implements Comparable<Diopter> {
 
   bool get isZero => quarters == 0;
 
+  bool get isNegative => quarters < 0;
+
+  /// Whole diopters, without sign: 2 for -2.75.
+  int get wholePart => quarters.abs() ~/ 4;
+
+  /// Quarter steps after the whole part, without sign: 3 for -2.75.
+  int get quarterPart => quarters.abs() % 4;
+
   /// Signed, two decimals: `+1.25`, `-0.50`, `+0.00`.
   String format() {
     final sign = quarters < 0 ? '-' : '+';
     return '$sign${value.abs().toStringAsFixed(2)}';
   }
-
-  /// Every value from `-maxQuarters` to `+maxQuarters`, ascending.
-  static List<Diopter> range(int maxQuarters) => [
-    for (var q = -maxQuarters; q <= maxQuarters; q++) Diopter.quarters(q),
-  ];
 
   @override
   int compareTo(Diopter other) => quarters.compareTo(other.quarters);

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/constants/app_config.dart';
@@ -8,13 +7,13 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/services/session_service.dart';
 import '../../../../core/utils/lens_order.dart';
 import '../../../../data/models/data_exception.dart';
-import '../../../../data/models/diopter.dart';
 import '../../../../data/models/glasses_request.dart';
 import '../../../../data/models/lens_item.dart';
 import '../../../../data/models/store.dart';
 import '../../../../data/providers/order_draft_provider.dart';
 import '../../../../data/providers/requests_provider.dart';
 import '../../../services/feedback_service.dart';
+import 'diopter_input.dart';
 
 /// Builds a glasses order for one store. The draft is saved on every change.
 class OrderController extends GetxController {
@@ -38,23 +37,12 @@ class OrderController extends GetxController {
   final FeedbackService _feedback;
   final DateTime Function() _clock;
 
-  /// Every selectable power, ascending (index 0 = most negative).
-  static final List<Diopter> powers = Diopter.range(LensCatalog.maxQuarterSteps);
-  static int indexOf(Diopter value) => value.quarters + LensCatalog.maxQuarterSteps;
-
   final Rx<String> lensType = LensCatalog.types.first.obs;
-  final Rx<Diopter> sphere = Diopter.zero.obs;
-  final Rx<Diopter> cylinder = Diopter.zero.obs;
+  final DiopterInput sphere = DiopterInput();
+  final DiopterInput cylinder = DiopterInput();
   final RxInt quantity = 1.obs;
   final RxList<LensItem> lines = <LensItem>[].obs;
   final RxBool isSubmitting = false.obs;
-
-  late final FixedExtentScrollController sphereWheel = FixedExtentScrollController(
-    initialItem: indexOf(sphere.value),
-  );
-  late final FixedExtentScrollController cylinderWheel = FixedExtentScrollController(
-    initialItem: indexOf(cylinder.value),
-  );
 
   int get totalQuantity => LensOrder.totalQuantity(lines);
   bool get canSubmit => lines.isNotEmpty && !isSubmitting.value;
@@ -66,8 +54,6 @@ class OrderController extends GetxController {
   }
 
   void selectLensType(String type) => lensType.value = type;
-  void onSphereIndexChanged(int index) => sphere.value = powers[index];
-  void onCylinderIndexChanged(int index) => cylinder.value = powers[index];
 
   void incrementQuantity() => quantity.value++;
 
@@ -79,8 +65,8 @@ class OrderController extends GetxController {
   void addLine() {
     final item = LensItem(
       type: lensType.value,
-      sphere: sphere.value,
-      cylinder: cylinder.value,
+      sphere: sphere.value.value,
+      cylinder: cylinder.value.value,
       quantity: quantity.value,
     );
     lines.assignAll(LensOrder.add(lines, item));
@@ -124,8 +110,8 @@ class OrderController extends GetxController {
 
   @override
   void onClose() {
-    sphereWheel.dispose();
-    cylinderWheel.dispose();
+    sphere.dispose();
+    cylinder.dispose();
     super.onClose();
   }
 }

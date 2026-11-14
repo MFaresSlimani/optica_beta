@@ -13,7 +13,7 @@ import '../../../widgets/section_header.dart';
 import '../../../widgets/state_views.dart';
 import '../../../widgets/surface_card.dart';
 import '../controllers/order_controller.dart';
-import 'widgets/diopter_wheel.dart';
+import 'widgets/diopter_picker.dart';
 import 'widgets/quantity_stepper.dart';
 
 class OrderView extends GetView<OrderController> {
@@ -61,26 +61,13 @@ class OrderView extends GetView<OrderController> {
                   Row(
                     children: [
                       Expanded(
-                        child: Obx(
-                          () => DiopterWheel(
-                            label: AppStrings.sphere.tr,
-                            values: OrderController.powers,
-                            selected: controller.sphere.value,
-                            scrollController: controller.sphereWheel,
-                            onChanged: controller.onSphereIndexChanged,
-                          ),
-                        ),
+                        child: DiopterPicker(label: AppStrings.sphere.tr, input: controller.sphere),
                       ),
                       const SizedBox(width: AppSpacing.md),
                       Expanded(
-                        child: Obx(
-                          () => DiopterWheel(
-                            label: AppStrings.cylinder.tr,
-                            values: OrderController.powers,
-                            selected: controller.cylinder.value,
-                            scrollController: controller.cylinderWheel,
-                            onChanged: controller.onCylinderIndexChanged,
-                          ),
+                        child: DiopterPicker(
+                          label: AppStrings.cylinder.tr,
+                          input: controller.cylinder,
                         ),
                       ),
                     ],

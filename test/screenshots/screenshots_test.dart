@@ -120,9 +120,9 @@ Future<void> _order(
   await pumpApp(tester, const OrderView(), framed: true, themeMode: themeMode);
   controller
     ..selectLensType('HMC 1.56')
-    ..sphereWheel.jumpToItem(OrderController.indexOf(Diopter.fromValue(-3.25)))
-    ..cylinderWheel.jumpToItem(OrderController.indexOf(Diopter.fromValue(-0.75)))
     ..incrementQuantity();
+  controller.sphere.setValue(Diopter.fromValue(-3.25));
+  controller.cylinder.setValue(Diopter.fromValue(-0.75));
   await settle(tester);
   await _capture(tester, name);
 }

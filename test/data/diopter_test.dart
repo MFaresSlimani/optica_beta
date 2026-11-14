@@ -23,18 +23,30 @@ void main() {
       expect(Diopter.tryParse('1.2.3'), isNull);
     });
 
-    test('format and parse round-trip over the whole picker range', () {
-      for (final d in Diopter.range(43)) {
-        expect(Diopter.tryParse(d.format()), d, reason: d.format());
+    test('splits into sign, whole and quarter parts', () {
+      final d = Diopter.fromValue(-2.75);
+      expect(d.isNegative, isTrue);
+      expect(d.wholePart, 2);
+      expect(d.quarterPart, 3);
+      expect(Diopter.quarterLabels[d.quarterPart], '75');
+    });
+
+    test('every picker combination round-trips through parts and text', () {
+      for (final negative in [false, true]) {
+        for (var whole = 0; whole <= 10; whole++) {
+          for (var quarter = 0; quarter < 4; quarter++) {
+            final d = Diopter.fromParts(negative: negative, whole: whole, quarter: quarter);
+            expect(Diopter.tryParse(d.format()), d, reason: d.format());
+            if (!d.isZero) {
+              expect((d.isNegative, d.wholePart, d.quarterPart), (negative, whole, quarter));
+            }
+          }
+        }
       }
     });
 
-    test('range is symmetric, ascending and centred on zero', () {
-      final range = Diopter.range(4);
-      expect(range, hasLength(9));
-      expect(range.first, const Diopter.quarters(-4));
-      expect(range[4], Diopter.zero);
-      expect(range, orderedEquals([...range]..sort()));
+    test('negative zero is just zero', () {
+      expect(Diopter.fromParts(negative: true, whole: 0, quarter: 0), Diopter.zero);
     });
   });
 }

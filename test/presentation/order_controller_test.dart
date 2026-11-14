@@ -1,4 +1,3 @@
-import 'package:bng_optica/data/models/diopter.dart';
 import 'package:bng_optica/presentation/modules/order/controllers/order_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -39,10 +38,14 @@ void main() {
   });
 
   test('adds the current selection and resets quantity', () {
-    final controller = build()
-      ..selectLensType('HMC 1.67')
-      ..onSphereIndexChanged(OrderController.indexOf(Diopter.fromValue(-3)))
-      ..onCylinderIndexChanged(OrderController.indexOf(Diopter.fromValue(-0.75)))
+    final controller = build()..selectLensType('HMC 1.67');
+    controller.sphere
+      ..toggleSign()
+      ..onWholeChanged(3);
+    controller.cylinder
+      ..toggleSign()
+      ..onQuarterChanged(3);
+    controller
       ..incrementQuantity()
       ..incrementQuantity()
       ..addLine();

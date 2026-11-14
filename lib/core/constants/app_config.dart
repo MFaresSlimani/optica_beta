@@ -67,6 +67,6 @@ abstract final class LensCatalog {
     'Polarisé',
   ];
 
-  /// Largest absolute diopter the picker offers, in quarter steps (±10.75).
-  static const int maxQuarterSteps = 43;
+  /// Largest whole diopter on the picker wheel (0–10, so powers up to ±10.75).
+  static const int maxWholeDiopters = 10;
 }
